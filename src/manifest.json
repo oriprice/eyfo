@@ -8,9 +8,9 @@
     "default_title": "Open the popup"
   },
   "icons": {
-    "16": "/assets/favicon.ico",
-    "48": "/assets/favicon.ico",
-    "128": "/assets/favicon.ico"
+    "16": "/assets/eyfo.png",
+    "48": "/assets/eyfo.png",
+    "128": "/assets/eyfo.png"
   },
   "options_page":"index.html?options",
   "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'",
