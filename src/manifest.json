@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "My Extension",
-  "description": "This extension is a starting point to create a real Chrome extension",
+  "name": "Eyfo",
+  "description": "Github Package finderreal Chrome extension",
   "version": "0.0.1",
   "browser_action": {
     "default_popup": "index.html?app",
-    "default_title": "Open the popup"
+    "default_title": "Search Packages"
   },
   "icons": {
     "16": "/assets/eyfo.png",
