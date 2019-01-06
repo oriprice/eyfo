@@ -1,0 +1,59 @@
+.wrapper {
+    padding: 30px;
+    & .input-container {
+        position: relative;
+
+        & input {
+            text-indent: 50px;
+        }
+
+        & .icon {
+            position: absolute;
+            top: 17px;
+            left: 25px;
+            font-size: 17px;
+            color: cornflowerblue;
+        }
+
+        & .label {
+            position: absolute;
+            color: white;
+            padding: 8px;
+            background-color: cornflowerblue;
+            border-radius: 6px;
+            top: 10px;
+            left: 6px;
+            font-weight: bold;
+        }
+    }
+
+    & .loading {
+        width: 100%;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        color: cornflowerblue;
+
+        .spinner {
+            margin: auto;
+            padding-top: 20px;
+            height: 2em;
+            width: 2em;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            color: cornflowerblue;
+        }
+
+        .funnies-wrapper {
+            margin-top: 15px;
+        }
+    }
+
+    .trash {
+        float: right;
+        padding: 4px;
+    }
+}

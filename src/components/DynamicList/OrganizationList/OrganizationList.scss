@@ -1,0 +1,31 @@
+
+.container {
+    margin: auto;
+}
+
+.list-group{
+    padding-left: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.list-item{
+    border-radius: 4px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    border: 1px solid #ddd;
+    color: #31708f;
+    background-color: #d9edf7;
+}
+
+.trash {
+    float: right;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.trash i {
+    vertical-align: text-top;
+}
