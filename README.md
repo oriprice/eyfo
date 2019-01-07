@@ -5,10 +5,8 @@ Browser extension (Chrome) to find github packages within predefined organizatio
 * Find best matching github global repository. 
 * Caching searches for fast future searches
 
-![Octotree on GitHub](docs/chrome-github.jpg)
-
 ## Install on Chrome
-* Install Octotree from [Chrome Web Store](link)
+* Install Eyfo from [Chrome Web Store](link)
 * Right-click on the extenstion, open its options to add the organization you belong to.
 
 ## Search for a package
