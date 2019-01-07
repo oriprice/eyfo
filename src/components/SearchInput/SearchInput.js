@@ -63,23 +63,26 @@ class SearchInput extends Component {
   renderInputComponent = (inputProps) => {
     const { global } = this.state;
     return (
-      <div className={styles.inputContainer}>
+      <div
+        className={styles.inputContainer}
+        onKeyDown={(e) => {
+          if (e.keyCode === 9) {
+            this.setState({ global: !global });
+            if (e.preventDefault) {
+              e.preventDefault();
+              return false;
+            }
+          }
+          return true;
+        }}
+      >
         <i className={classnames(styles.icon, 'fas', 'fa-search')} />
         {global && (<span className={styles.label}>Global:</span>)}
         <input
           autoFocus
           className={styles.input}
           {...inputProps}
-          onKeyDown={(e) => {
-            if (e.keyCode === 9) {
-              this.setState({ global: !global });
-              if (e.preventDefault) {
-                e.preventDefault();
-              }
-              return false;
-            }
-            return true;
-          }}
+
         />
       </div>
     );
