@@ -98,11 +98,10 @@ class SearchInput extends Component {
       let pageIndex = 1;
       let response = { data: '' };
       let pagedUrl = url.slice();
-      while (pageIndex <= 15
+      while (pageIndex <= 1
         && !/<div class="code-list">\s*<\/div>/.test(response.data)
         && !/We couldn’t find any code matching/.test(response.data)) {
-        response = await axios.get({
-          url: pagedUrl,
+        response = await axios.get(pagedUrl, {
           validateStatus(status) {
             return status >= 200 && status < 300; // default
           },
@@ -160,6 +159,12 @@ class SearchInput extends Component {
             urlPatternToReplace,
             urlStringReplacement,
             packageName);
+          searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apom.xml+in%3Afile&type=Code`,
+            searchPattern,
+            /\/.*\/(?=pom.xml)/,
+            urlPatternToReplace,
+            urlStringReplacement,
+            packageName);
           if (searchResult) {
             break;
           }
@@ -178,7 +183,7 @@ class SearchInput extends Component {
       });
     } catch (error) {
       this.setState({
-        error: `First, sign in to <a href="https://www.github.com" target="_blank">GitHub</a>
+        error: `${error.message}First, sign in to <a href="https://www.github.com" target="_blank">GitHub</a>
         <br />
         Then, unleash me..`,
       });
