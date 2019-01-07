@@ -52,6 +52,15 @@
         }
     }
 
+    & .error {
+        width: 100%;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        color: crimson;
+        padding-top: 20px;
+    }
+
     .trash {
         float: right;
         padding: 4px;

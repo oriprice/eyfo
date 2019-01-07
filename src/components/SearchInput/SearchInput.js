@@ -92,26 +92,36 @@ class SearchInput extends Component {
   };
 
   search = (url, searchPattern, urlPattern,
-    urlPatternToReplace, urlPatternReplacement, packageName) => new Promise(async (resolve) => {
-    let pageIndex = 1;
-    let response = { data: '' };
-    let pagedUrl = url.slice();
-    while (pageIndex <= 15
-      && !/<div class="code-list">\s*<\/div>/.test(response.data)
-      && !/We couldn’t find any code matching/.test(response.data)) {
-      response = await axios.get(pagedUrl);
-      const index = searchPattern[Symbol.search](response.data);
-      if (index >= 0) {
-        response.data = response.data.slice(index - 300, index);
-        const navigateTourl = urlPattern[Symbol.match](response.data).slice(-1)[0]
-          .replace(urlPatternToReplace, urlPatternReplacement);
-        await setInStorage({ options: { ...this.options, [packageName]: navigateTourl } });
-        resolve(tabUtils.openTab(navigateTourl));
+    urlPatternToReplace, urlPatternReplacement,
+    packageName) => new Promise(async (resolve, reject) => {
+    try {
+      let pageIndex = 1;
+      let response = { data: '' };
+      let pagedUrl = url.slice();
+      while (pageIndex <= 15
+        && !/<div class="code-list">\s*<\/div>/.test(response.data)
+        && !/We couldn’t find any code matching/.test(response.data)) {
+        response = await axios.get({
+          url: pagedUrl,
+          validateStatus(status) {
+            return status >= 200 && status < 300; // default
+          },
+        });
+        const index = searchPattern[Symbol.search](response.data);
+        if (index >= 0) {
+          response.data = response.data.slice(index - 300, index);
+          const navigateTourl = urlPattern[Symbol.match](response.data).slice(-1)[0]
+            .replace(urlPatternToReplace, urlPatternReplacement);
+          await setInStorage({ options: { ...this.options, [packageName]: navigateTourl } });
+          resolve({ url: navigateTourl });
+        }
+        pagedUrl = pagedUrl.replace(`p=${pageIndex}`, `p=${pageIndex + 1}`);
+        pageIndex += 1;
       }
-      pagedUrl = pagedUrl.replace(`p=${pageIndex}`, `p=${pageIndex + 1}`);
-      pageIndex += 1;
+      resolve();
+    } catch (e) {
+      reject(e);
     }
-    resolve();
   });
 
   onFormSubmit = async (e) => {
@@ -133,22 +143,45 @@ class SearchInput extends Component {
       tabUtils.openTab(url);
     }
 
-    if (global) {
-      await this.search(`https://github.com/search?q=${packageName}`,
-        searchPattern,
-        /href=".*"/,
-        /^href="|"$/g,
-        '',
-        packageName);
-    } else {
-      for (let i = 0; i < this.organizations.length; i += 1) {
-        await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apackage.json+in%3Afile&type=Code`,
-          searchPatternWithOrg,
-          urlPatternToFind,
-          urlPatternToReplace,
-          urlStringReplacement,
+    let searchResult;
+    try {
+      if (global) {
+        searchResult = await this.search(`https://github.com/search?q=${packageName}`,
+          searchPattern,
+          /href=".*"/,
+          /^href="|"$/g,
+          '',
           packageName);
+      } else if (this.organizations) {
+        for (let i = 0; i < this.organizations.length; i += 1) {
+          searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apackage.json+in%3Afile&type=Code`,
+            searchPatternWithOrg,
+            urlPatternToFind,
+            urlPatternToReplace,
+            urlStringReplacement,
+            packageName);
+          if (searchResult) {
+            break;
+          }
+        }
       }
+
+      if (searchResult && searchResult.url) {
+        tabUtils.openTab(searchResult.url);
+      }
+      this.setState({
+        error: `Oh no, package not found.
+              <br />
+              Did you mean this?
+              <br />
+              <a href="#">Google Search Algorithm</a>`,
+      });
+    } catch (error) {
+      this.setState({
+        error: `First, sign in to <a href="https://www.github.com" target="_blank">GitHub</a>
+        <br />
+        Then, unleash me..`,
+      });
     }
   };
 
@@ -199,11 +232,7 @@ class SearchInput extends Component {
             </div>
           )}
           {error && (
-            <div className={styles.error}>
-              Oh no, package not found.
-              <br />
-              Maybe you should have created it first?
-            </div>
+            <div className={styles.error} dangerouslySetInnerHTML={{ __html: error }} />
           )}
         </form>
       </div>
