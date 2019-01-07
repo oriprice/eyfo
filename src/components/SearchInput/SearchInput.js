@@ -128,6 +128,7 @@ class SearchInput extends Component {
     const packageName = value.slice().replace(/@(.*)\//, '');
     const searchPatternWithOrg = new RegExp(`name<span class="pl-pds">&quot;</span></span>: <span class="pl-s"><span class="pl-pds">&quot;</span>(@(.*)/)?<em>${packageName}</em><span class="pl-pds">&quot;</span>`);
     const searchPattern = new RegExp(`<em>${packageName}</em>`, 'g');
+    const searchPatternForPom = new RegExp(`span>&gt;<em>${packageName}</em>&lt;/<span`);
     const urlPatternToFind = /\/.*\/(?=package.json)/;
     const urlPatternToReplace = /\/blob(\/[a-z0-9]*){1}/;
     const urlStringReplacement = '/tree/master';
@@ -160,7 +161,7 @@ class SearchInput extends Component {
             urlStringReplacement,
             packageName);
           searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apom.xml+in%3Afile&type=Code`,
-            searchPattern,
+            searchPatternForPom,
             /\/.*\/(?=pom.xml)/,
             urlPatternToReplace,
             urlStringReplacement,
