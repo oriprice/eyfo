@@ -192,7 +192,7 @@ class SearchInput extends Component {
                 <i className="fa fa-2x fa-spinner fa-spin" />
               </div>
               <div className={styles.funniesWrapper}>
-                <FunniesComponent interval={2000} />
+                <FunniesComponent interval={3000} />
               </div>
             </div>
           )}
