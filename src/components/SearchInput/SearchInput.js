@@ -4,7 +4,7 @@ import FunniesComponent from 'funnies/dist/react';
 import axios from 'axios';
 import classnames from 'classnames';
 
-import { setInStorage, getFromStorage } from '../../utils/srotageUtils';
+import { setInStorage, getFromStorage } from '../../utils/storageUtils';
 
 import styles from './SearchInput.scss';
 import './searchInput.css';
@@ -165,7 +165,9 @@ class SearchInput extends Component {
   };
 
   render() {
-    const { value, suggestions, loading } = this.state;
+    const {
+      value, suggestions, loading, error,
+    } = this.state;
     const inputProps = {
       placeholder: 'Search Dependency',
       value,
@@ -186,7 +188,7 @@ class SearchInput extends Component {
             renderInputComponent={this.renderInputComponent}
             onSuggestionSelected={this.onSuggestionSelected}
           />
-          {loading && (
+          {loading && !error && (
             <div className={styles.loading}>
               <div className={styles.spinner}>
                 <i className="fa fa-2x fa-spinner fa-spin" />
@@ -194,6 +196,13 @@ class SearchInput extends Component {
               <div className={styles.funniesWrapper}>
                 <FunniesComponent interval={3000} />
               </div>
+            </div>
+          )}
+          {error && (
+            <div className={styles.error}>
+              Oh no, package not found.
+              <br />
+              Maybe you should have created it first?
             </div>
           )}
         </form>

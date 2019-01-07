@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { setInStorage, getFromStorage } from '../../utils/srotageUtils';
+import { setInStorage, getFromStorage } from '../../utils/storageUtils';
 import DynamicList from '../DynamicList/DynamicList';
 
 class Options extends Component {
