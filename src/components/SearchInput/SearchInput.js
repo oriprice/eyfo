@@ -104,7 +104,7 @@ class SearchInput extends Component {
         response.data = response.data.slice(index - 300, index);
         const navigateTourl = urlPattern[Symbol.match](response.data).slice(-1)[0]
           .replace(urlPatternToReplace, urlPatternReplacement);
-        await setInStorage({ options: { ...this.options, [packageName]: url } });
+        await setInStorage({ options: { ...this.options, [packageName]: navigateTourl } });
         resolve(tabUtils.openTab(navigateTourl));
       }
       pagedUrl = pagedUrl.replace(`p=${pageIndex}`, `p=${pageIndex + 1}`);
@@ -140,8 +140,8 @@ class SearchInput extends Component {
         '',
         packageName);
     } else {
-      for (let i = 0; i < this.organizations.length; i += 1) {
-        await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apackage.json+in%3Afile&type=Code`,
+      for (let i = 0; i < this.organizations.organizations.length; i += 1) {
+        await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations.organizations[i]}+filename%3Apackage.json+in%3Afile&type=Code`,
           searchPatternWithOrg,
           urlPatternToFind,
           urlPatternToReplace,
