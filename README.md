@@ -6,10 +6,18 @@ Browser extension (Chrome) to find github packages within predefined organizatio
 * Caching searches for fast future searches
 
 ## Install on Chrome
-* Install Eyfo from [Chrome Web Store](link)
+* Install Eyfo from [Chrome Web Store](https://chrome.google.com/webstore/detail/eyfo/kfndjpohnlhfifjmdmbddfnedicmlaif)
 * Right-click on the extenstion, open its options to add the organization you belong to.
 
+
+
 ## Search for a package
-* Open the extension and start typing the package you would like to search.
+* Open the extension (see shortcuts below) and start typing the package you would like to search.
 * Hit TAB to search global repository (outside of the organization).
 * Cached result will appear at the bottom.
+
+## Hotkeys
+<b>windows</b>: Ctrl+Shift+A<br/>
+<b>mac</b>: Command+Shift+A<br/>
+<b>chromeos</b>: Ctrl+Shift+A<br/>
+<b>linux</b>: Ctrl+Shift+A<br/>
