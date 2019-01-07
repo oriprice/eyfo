@@ -23,17 +23,16 @@ class Options extends Component {
     this.setState({
       organizations: [...organizations, orgName],
     }, () => {
-      setInStorage({ organizations: { organizations } = this.state });
+      setInStorage({ organizations } = this.state);
     });
   }
 
   async removeOrg(orgName) {
-    const organizationsFromeStorage = await getFromStorage('organizations');
+    let organizations = await getFromStorage('organizations');
     this.setState({
-      organizations: organizationsFromeStorage.filter(org => org !== orgName),
+      organizations: organizations.filter(org => org !== orgName),
     }, async () => {
-      const { organizations } = this.state;
-      await setInStorage({ organizations });
+      await setInStorage({ organizations } = this.state);
     });
   }
 

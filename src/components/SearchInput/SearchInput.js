@@ -140,8 +140,8 @@ class SearchInput extends Component {
         '',
         packageName);
     } else {
-      for (let i = 0; i < this.organizations.organizations.length; i += 1) {
-        await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations.organizations[i]}+filename%3Apackage.json+in%3Afile&type=Code`,
+      for (let i = 0; i < this.organizations.length; i += 1) {
+        await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apackage.json+in%3Afile&type=Code`,
           searchPatternWithOrg,
           urlPatternToFind,
           urlPatternToReplace,
