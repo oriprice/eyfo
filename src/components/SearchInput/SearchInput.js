@@ -77,7 +77,7 @@ class SearchInput extends Component {
         }}
       >
         <i className={classnames(styles.icon, 'fas', 'fa-search')} />
-        {global && (<span className={styles.label}>Global:</span>)}
+        {global && (<span className={styles.label}>Global</span>)}
         <input
           autoFocus
           className={styles.input}
