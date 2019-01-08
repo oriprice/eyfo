@@ -9,6 +9,7 @@ const DynamicList = ({ addOrg, organizations, removeOrg }) => (
   <div className={styles.componentWrapper}>
     <OrganizationList organizations={organizations} removeOrg={removeOrg} />
     <AddOrgForm addOrg={addOrg} />
+    <small className="form-text text-muted">You can use also csv format i.e. org1, org2...</small>
   </div>
 );
 

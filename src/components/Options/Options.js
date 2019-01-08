@@ -20,13 +20,24 @@ class Options extends Component {
 
   addOrg(orgName) {
     let { organizations } = this.state;
-    if (!organizations.includes(orgName)) {
-      this.setState({
-        organizations: [...organizations, orgName],
-      }, () => {
-        setInStorage({ organizations } = this.state);
-      });
+    let arrayOfOrgs = [orgName];
+    const isCSV = orgName.includes(',');
+    if (isCSV) {
+      arrayOfOrgs = orgName.split(',');
     }
+
+    arrayOfOrgs.forEach((org) => {
+      const trimmedOrgName = org.trim();
+      if (!organizations.includes(trimmedOrgName)) {
+        organizations = [...organizations, trimmedOrgName];
+      }
+    });
+
+    this.setState({
+      organizations,
+    }, () => {
+      setInStorage({ organizations } = this.state);
+    });
   }
 
   async removeOrg(orgName) {
