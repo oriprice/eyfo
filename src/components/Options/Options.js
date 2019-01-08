@@ -20,11 +20,13 @@ class Options extends Component {
 
   addOrg(orgName) {
     let { organizations } = this.state;
-    this.setState({
-      organizations: [...organizations, orgName],
-    }, () => {
-      setInStorage({ organizations } = this.state);
-    });
+    if (!organizations.includes(orgName)) {
+      this.setState({
+        organizations: [...organizations, orgName],
+      }, () => {
+        setInStorage({ organizations } = this.state);
+      });
+    }
   }
 
   async removeOrg(orgName) {
