@@ -148,7 +148,7 @@ class SearchInput extends Component {
     let searchResult;
     try {
       if (global) {
-        searchResult = await this.search(`https://github.com/search?q=${packageName}`,
+        searchResult = await this.search(`https://github.com/search?q=${packageName}&o=desc&s=stars`,
           searchPattern,
           /href=".*"/,
           /^href="|"$/g,
