@@ -100,7 +100,7 @@ class SearchInput extends Component {
       let pageIndex = 1;
       let response = { data: '' };
       let pagedUrl = url.slice();
-      while (pageIndex <= 1
+      while (pageIndex <= 5
         && !/<div class="code-list">\s*<\/div>/.test(response.data)
         && !/We couldn’t find any code matching/.test(response.data)) {
         response = await axios.get(pagedUrl, {
