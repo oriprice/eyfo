@@ -67,7 +67,7 @@ class SearchInput extends Component {
         className={styles.inputContainer}
         onKeyDown={(e) => {
           if (e.keyCode === 9) {
-            this.setState({ global: !global });
+            this.setState({ global: !global, error: null, loading: false });
             if (e.preventDefault) {
               e.preventDefault();
               return false;
@@ -82,7 +82,6 @@ class SearchInput extends Component {
           autoFocus
           className={styles.input}
           {...inputProps}
-
         />
       </div>
     );
@@ -155,7 +154,7 @@ class SearchInput extends Component {
           /^href="|"$/g,
           '',
           packageName);
-      } else if (this.organizations) {
+      } else if (this.organizations && this.organizations.length > 0) {
         for (let i = 0; i < this.organizations.length; i += 1) {
           searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apackage.json+in%3Afile&type=Code`,
             searchPatternWithOrg,
@@ -173,18 +172,17 @@ class SearchInput extends Component {
             break;
           }
         }
+      } else {
+        this.setState({
+          error: `You should add <a href='?options' target="_blank">Organizations</a>.
+              <br />
+             Or hit TAB to search globally`,
+        });
       }
 
       if (searchResult && searchResult.url) {
         tabUtils.openTab(searchResult.url);
       }
-      this.setState({
-        error: `Oh no, package not found.
-              <br />
-              Did you mean this?
-              <br />
-              <a href="#">Google Search Algorithm</a>`,
-      });
     } catch (error) {
       this.setState({
         error: `${error.message}First, sign in to <a href="https://www.github.com" target="_blank">GitHub</a>
