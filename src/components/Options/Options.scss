@@ -1,0 +1,25 @@
+.card {
+  width: 30rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 2px solid grey;
+  border-radius: .25rem;
+  margin: auto;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.card-body {
+  background: #efefef;
+  padding: 50px;
+}
+
+.card-title{
+  font-size: 2rem;
+  text-align: center;
+}

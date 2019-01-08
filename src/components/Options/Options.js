@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import { setInStorage, getFromStorage } from '../../utils/storageUtils';
 import DynamicList from '../DynamicList/DynamicList';
+import styles from './Options.scss';
 
 class Options extends Component {
   constructor(props) {
@@ -52,12 +54,15 @@ class Options extends Component {
   render() {
     const { organizations } = this.state;
     return (
-      <div>
-        <DynamicList
-          addOrg={this.addOrg}
-          removeOrg={this.removeOrg}
-          organizations={organizations}
-        />
+      <div className={classnames(styles.card, 'card')}>
+        <h1 className={classnames(styles.cardTitle, 'card-title')}>Github Organizations</h1>
+        <div className={classnames(styles.cardBody, 'card-body')}>
+          <DynamicList
+            addOrg={this.addOrg}
+            removeOrg={this.removeOrg}
+            organizations={organizations}
+          />
+        </div>
       </div>
     );
   }
