@@ -183,6 +183,14 @@ class SearchInput extends Component {
       if (searchResult && searchResult.url) {
         tabUtils.openTab(searchResult.url);
       }
+
+      this.setState({
+        error: `Oh no, package not found.
+              <br />
+              Did you mean this?
+              <br />
+              <a href="#">Google Search Algorithm</a>`,
+      });
     } catch (error) {
       this.setState({
         error: `${error.message}First, sign in to <a href="https://www.github.com" target="_blank">GitHub</a>
