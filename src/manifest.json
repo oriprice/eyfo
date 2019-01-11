@@ -16,12 +16,8 @@
   "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'",
   "permissions": [
     "tabs",
-    "cookies",
     "*://*.github.com/*",
-    "storage",
-    "webNavigation",
-    "webRequest",
-    "webRequestBlocking"
+    "storage"
   ],
   "commands": {
     "_execute_browser_action": {
