@@ -24,12 +24,15 @@ class SearchInput extends Component {
     this.state = {
       value: '',
       suggestions: [],
+      global: false,
     };
   }
 
   async componentDidMount() {
     this.options = await getFromStorage('options') || {};
     this.organizations = await getFromStorage('organizations');
+    const global = await getFromStorage('global') || false;
+    this.setState({ global });
   }
 
   onSuggestionSelected = (event, { suggestion }) => {
@@ -67,7 +70,8 @@ class SearchInput extends Component {
         className={styles.inputContainer}
         onKeyDown={(e) => {
           if (e.keyCode === 9) {
-            this.setState({ global: !global, error: null, loading: false });
+            this.setState({ global: !global, error: null, loading: false },
+              () => setInStorage({ global: !global }));
             if (e.preventDefault) {
               e.preventDefault();
               return false;
