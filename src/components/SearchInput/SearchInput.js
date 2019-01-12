@@ -191,9 +191,7 @@ class SearchInput extends Component {
       this.setState({
         error: `Oh no, package not found.
               <br />
-              Did you mean this?
-              <br />
-              <a href="#">Google Search Algorithm</a>`,
+              <a href="https://www.google.com/search?q=${packageName}" target="_blank">Google it for you?</a>`,
       });
     } catch (error) {
       this.setState({
