@@ -69,8 +69,9 @@ class SearchInput extends Component {
       <div
         className={styles.inputContainer}
         onKeyDown={(e) => {
+          this.setState({ error: null, loading: false });
           if (e.keyCode === 9) {
-            this.setState({ global: !global, error: null, loading: false },
+            this.setState({ global: !global },
               () => setInStorage({ global: !global }));
             if (e.preventDefault) {
               e.preventDefault();
@@ -123,6 +124,7 @@ class SearchInput extends Component {
         pagedUrl = pagedUrl.replace(`p=${pageIndex}`, `p=${pageIndex + 1}`);
         pageIndex += 1;
       }
+
       resolve();
     } catch (e) {
       reject(e);
@@ -166,6 +168,9 @@ class SearchInput extends Component {
             urlPatternToReplace,
             urlStringReplacement,
             packageName);
+          if (searchResult) {
+            break;
+          }
           searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apom.xml+in%3Afile&type=Code`,
             searchPatternForPom,
             /\/.*\/(?=pom.xml)/,
@@ -183,7 +188,6 @@ class SearchInput extends Component {
              Or hit TAB to search globally`,
         });
       }
-
       if (searchResult && searchResult.url) {
         tabUtils.openTab(searchResult.url);
       }
