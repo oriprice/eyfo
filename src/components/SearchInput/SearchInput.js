@@ -149,6 +149,7 @@ class SearchInput extends Component {
     const url = this.options[packageName];
     if (url) {
       tabUtils.openTab(url);
+      return;
     }
 
     let searchResult;
@@ -190,6 +191,7 @@ class SearchInput extends Component {
       }
       if (searchResult && searchResult.url) {
         tabUtils.openTab(searchResult.url);
+        return;
       }
 
       this.setState({
