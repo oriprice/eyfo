@@ -37,12 +37,13 @@ Until it is published, you can build your own version and install it locally. It
 npm install -g web-ext 
 npm install
 npm run build
+cd dist
 web-ext sign --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET 
 ```
 
 > Note: You need to replace `$AMO_JWT_ISSUER` and `$AMO_JWT_SECRET` with the credentials you created.
 
-After these commands are executed, an **eyfo xpi file** is created under `web-ext-artifacts`.
+After these commands are executed, an **eyfo xpi file** is created under `dist/web-ext-artifacts`.
 Now you can simply go to your Firefox and select **File -> Open File... (⌘O)** and open this xpi file,
 which will install it in your Firefox.
 
