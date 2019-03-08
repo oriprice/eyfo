@@ -1,3 +1,4 @@
+/* global window */
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import FunniesComponent from 'funnies/dist/react';
@@ -149,6 +150,7 @@ class SearchInput extends Component {
     const url = this.options[packageName];
     if (url) {
       tabUtils.openTab(url);
+      window.close();
     }
 
     let searchResult;
@@ -190,6 +192,7 @@ class SearchInput extends Component {
       }
       if (searchResult && searchResult.url) {
         tabUtils.openTab(searchResult.url);
+        window.close();
       }
 
       this.setState({
