@@ -8,6 +8,7 @@
         "jsx-a11y/click-events-have-key-events": "off",
         "no-await-in-loop": "off",
         "jsx-a11y/no-autofocus": "off",
-        "react/no-danger": "off"
+        "react/no-danger": "off",
+        "no-debugger": "warn"
     }
 }
