@@ -6,6 +6,7 @@ import axios from 'axios';
 import classnames from 'classnames';
 
 import { setInStorage, getFromStorage } from '../../utils/storageUtils';
+import getUserOrganizations from '../../utils/organizationsUtils';
 
 import styles from './SearchInput.scss';
 import './searchInput.css';
@@ -32,6 +33,11 @@ class SearchInput extends Component {
   async componentDidMount() {
     this.options = await getFromStorage('options') || {};
     this.organizations = await getFromStorage('organizations');
+    if (!this.organizations) {
+      this.organizations = await getUserOrganizations();
+      await setInStorage({ organizations: this.organizations });
+    }
+
     const global = await getFromStorage('global') || false;
     this.setState({ global });
   }

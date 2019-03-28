@@ -30,7 +30,7 @@ export default class AddOrgForm extends Component {
     const { value } = this.state;
     return (
       <form className={styles.formInline} onSubmit={this.handleClick} action="#">
-        <input type="text" value={value} onChange={this.handleChange} className={styles.formControl} placeholder="Organization Name" />
+        <input type="text" value={value} onChange={this.handleChange} className={styles.formControl} placeholder="Add Organization" />
         <button className={styles.hiddenButton} type="submit"><i className="fa fa-2x fa-plus-circle" /></button>
       </form>
     );
