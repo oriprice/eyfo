@@ -20,8 +20,8 @@ class Options extends Component {
     let organizations = await getFromStorage('organizations');
     if (!organizations) {
       organizations = await this.importOrganizations();
-      this.setState({ organizations });
     }
+    this.setState({ organizations });
   }
 
   addOrg(orgName) {
