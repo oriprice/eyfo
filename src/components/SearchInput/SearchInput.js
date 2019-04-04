@@ -45,6 +45,7 @@ class SearchInput extends Component {
   }
 
   onSuggestionSelected = (event, { suggestion }) => {
+    event.preventDefault();
     this.setState({ value: suggestion }, () => this.onFormSubmit(event));
   };
 
@@ -252,6 +253,7 @@ class SearchInput extends Component {
             inputProps={inputProps}
             renderInputComponent={this.renderInputComponent}
             onSuggestionSelected={this.onSuggestionSelected}
+            focusInputOnSuggestionClick={false}
           />
           <small className="form-text text-muted">Use TAB to toggle between global and private search</small>
           {loading && !error && (
