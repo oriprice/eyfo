@@ -17,8 +17,6 @@ class Options extends Component {
   }
 
   async componentDidMount() {
-    // ga('set', 'page', '/options');
-    // ga('send', 'pageview');
     let organizations = await getFromStorage('organizations');
     if (!organizations) {
       organizations = await this.importOrganizations();
