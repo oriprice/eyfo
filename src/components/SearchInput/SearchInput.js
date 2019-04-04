@@ -254,7 +254,11 @@ class SearchInput extends Component {
             onSuggestionSelected={this.onSuggestionSelected}
             focusInputOnSuggestionClick={false}
           />
-          <small className="form-text text-muted">Use TAB to toggle between global and private search</small>
+          <small className="form-text text-muted">
+            Use
+            <b> TAB </b>
+            to toggle between global and private search
+          </small>
           {loading && !error && (
             <div className={styles.loading}>
               <div className={styles.spinner}>
