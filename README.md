@@ -1,4 +1,4 @@
-# eyfo
+# Eyfo
 Browser extension (Chrome) to find github packages within predefined organizations, and globally.
 
 * Find npm package within multiple organizations.
@@ -12,12 +12,12 @@ Browser extension (Chrome) to find github packages within predefined organizatio
 
 ## Search for a package
 * Open the extension (see shortcuts below) and start typing the package you would like to search.
-* Scoped packages are supported both @[scope]/[package_name] and [package_name] will work.
-* Hit TAB to search global repository (outside of the organization).
-* Cached result will appear at the bottom.
+* Scoped packages are supported both `@[scope]/[package_name]` and `[package_name]` will work.
+* Hit `TAB` to search global repository (outside of the organization).
+* Cached result will appear in a list below.
 
 ## Hotkeys
-<b>windows</b>: Ctrl+Shift+A<br/>
-<b>mac</b>: Command+Shift+A<br/>
-<b>chromeos</b>: Ctrl+Shift+A<br/>
-<b>linux</b>: Ctrl+Shift+A<br/>
+<b>windows</b>: `Ctrl`+`Shift`+`A`<br/>
+<b>mac</b>: `Command`+`Shift`+`A`<br/>
+<b>chromeos</b>: `Ctrl`+`Shift`+`A`<br/>
+<b>linux</b>: `Ctrl`+`Shift`+`A`<br/>
