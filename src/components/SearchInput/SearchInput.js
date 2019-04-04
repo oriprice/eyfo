@@ -1,4 +1,4 @@
-/* global window ga */
+/* global window _gaq */
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import FunniesComponent from 'funnies/dist/react';
@@ -31,8 +31,7 @@ class SearchInput extends Component {
   }
 
   async componentDidMount() {
-    ga('set', 'page', '/main');
-    ga('send', 'pageview');
+    _gaq.push(['_trackPageview']);
     this.options = await getFromStorage('options') || {};
     this.organizations = await getFromStorage('organizations');
     if (!this.organizations) {

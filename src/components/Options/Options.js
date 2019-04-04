@@ -1,3 +1,4 @@
+/* globals _gaq */
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
@@ -17,6 +18,7 @@ class Options extends Component {
   }
 
   async componentDidMount() {
+    _gaq.push(['_trackPageview']);
     let organizations = await getFromStorage('organizations');
     if (!organizations) {
       organizations = await this.importOrganizations();
