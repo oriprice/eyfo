@@ -1,4 +1,3 @@
-/* globals ga */
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
@@ -18,13 +17,43 @@ class Options extends Component {
   }
 
   async componentDidMount() {
-    ga('set', 'page', '/options');
-    ga('send', 'pageview');
+    // ga('set', 'page', '/options');
+    // ga('send', 'pageview');
     let organizations = await getFromStorage('organizations');
     if (!organizations) {
       organizations = await this.importOrganizations();
     }
     this.setState({ organizations });
+  }
+
+
+  onDragStart(e, index) {
+    const { organizations } = this.state;
+    this.draggedItem = organizations[index];
+  }
+
+  onDragOver(index) {
+    const { organizations } = this.state;
+    this.draggedOverItem = organizations[index];
+
+    // if the item is dragged over itself, ignore
+    if (this.draggedItem === this.draggedOverItem) {
+      return;
+    }
+
+    // filter out the currently dragged item
+    const currnetItems = organizations.filter(item => item !== this.draggedItem);
+
+    // add the dragged item after the dragged over item
+    currnetItems.splice(index, 0, this.draggedItem);
+
+    this.setState({ organizations: currnetItems }, async () => {
+      await setInStorage({ organizations: currnetItems });
+    });
+  }
+
+  onDragEnd() {
+    this.draggedIdx = null;
   }
 
   addOrg(orgName) {
@@ -49,15 +78,6 @@ class Options extends Component {
     });
   }
 
-  async removeOrg(orgName) {
-    let organizations = await getFromStorage('organizations');
-    this.setState({
-      organizations: organizations.filter(org => org !== orgName),
-    }, async () => {
-      await setInStorage({ organizations } = this.state);
-    });
-  }
-
   async importOrganizations() {
     this.setState({ loading: true });
     return new Promise(async (resolve) => {
@@ -72,6 +92,14 @@ class Options extends Component {
     });
   }
 
+  async removeOrg(orgName) {
+    let organizations = await getFromStorage('organizations');
+    this.setState({
+      organizations: organizations.filter(org => org !== orgName),
+    }, async () => {
+      await setInStorage({ organizations } = this.state);
+    });
+  }
 
   render() {
     const { organizations, loading } = this.state;
@@ -87,6 +115,9 @@ class Options extends Component {
               addOrg={this.addOrg}
               removeOrg={this.removeOrg}
               organizations={organizations}
+              onDragStart={(e, index) => this.onDragStart(e, index)}
+              onDragEnd={() => this.onDragEnd()}
+              onDragOver={index => this.onDragOver(index)}
             />
           )
       }
