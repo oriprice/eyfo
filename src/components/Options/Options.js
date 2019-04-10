@@ -30,6 +30,9 @@ class Options extends Component {
   onDragStart(e, index) {
     const { organizations } = this.state;
     this.draggedItem = organizations[index];
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.target.parentNode);
+    e.dataTransfer.setDragImage(e.target.parentNode, 20, 20);
   }
 
   onDragOver(index) {

@@ -20,19 +20,24 @@ class OrganizationList extends Component {
               <li
                 style={{ margin: index === draggingOverIndex ? '10px' : '0', visibility: index === draggingOverIndex ? 'hidden' : 'visible' }}
                 className={styles.listItem}
-                draggable
-                onDragOver={() => {
-                  this.setState({
-                    draggingOverIndex: index,
-                  }, () => onDragOver(index));
-                }}
-                onDragStart={e => onDragStart(e, index)}
-                onDragEnd={() => {
-                  this.setState({
-                    draggingOverIndex: -1,
-                  }, () => onDragEnd());
-                }}
               >
+                <div
+                  className={styles.drag}
+                  draggable
+                  onDragOver={() => {
+                    this.setState({
+                      draggingOverIndex: index,
+                    }, () => onDragOver(index));
+                  }}
+                  onDragStart={e => onDragStart(e, index)}
+                  onDragEnd={() => {
+                    this.setState({
+                      draggingOverIndex: -1,
+                    }, () => onDragEnd());
+                  }}
+                >
+                  <i className="fas fa-grip-lines" />
+                </div>
                 {orgName}
                 <div
                   className={styles.trash}
