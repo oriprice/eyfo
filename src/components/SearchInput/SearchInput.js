@@ -143,9 +143,9 @@ class SearchInput extends Component {
   onFormSubmit = async (e) => {
     const { value, global } = this.state;
     const packageName = value.slice().replace(/@(.*)\//, '');
-    const searchPatternWithOrg = new RegExp(`name<span class="pl-pds">&quot;</span></span>: <span class="pl-s"><span class="pl-pds">&quot;</span>(@(.*)/)?<em>${packageName}</em><span class="pl-pds">&quot;</span>`);
-    const searchPattern = new RegExp(`<em>${packageName}</em>`, 'g');
-    const searchPatternForPom = new RegExp(`span>&gt;<em>${packageName}</em>&lt;/<span`);
+    const searchPatternWithOrg = new RegExp(`name<span class="pl-pds">&quot;</span></span>: <span class="pl-s"><span class="pl-pds">&quot;</span>(@(.*)/)?<span class='text-bold'>${packageName}</span>`);
+    const searchPattern = new RegExp(`<span class="text-bold">${packageName}</span>`, 'g');
+    const searchPatternForPom = new RegExp(`span>&gt;<span class="text-bold">${packageName}</span>&lt;/<span`);
     const urlPatternToFind = /\/.*\/(?=package.json)/;
     const urlPatternToReplace = /\/blob(\/[a-z0-9]*){1}/;
     const urlStringReplacement = '/tree/master';
