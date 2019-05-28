@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Eyfo",
   "description": "Github Package Finder - Chrome extension",
-  "version": "1.0.3",
+  "version": "1.1.1",
   "browser_action": {
     "default_popup": "index.html?app",
     "default_title": "Eyfo - Github Package Finder"
@@ -17,7 +17,7 @@
     "128": "/assets/eyfo.png"
   },
   "options_page":"index.html?options",
-  "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'sha256-m7R1zzM6IUk6v6+pnZA0rBeM0xL6oLiDpnjl9lfdwRA=' 'sha256-YD7kr76suERaRNp+QkSCLva0rewzdm8/iTHHn3hhTfY=' https://ssl.google-analytics.com; object-src 'self'",
   "permissions": [
     "tabs",
     "*://*.github.com/*",

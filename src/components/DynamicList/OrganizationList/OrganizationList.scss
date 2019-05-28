@@ -29,3 +29,13 @@
 .trash i {
     vertical-align: text-top;
 }
+
+.drag {
+    float: left;
+    padding: 4px;
+    cursor: grab;
+}
+
+.drag i {
+    vertical-align: text-top;
+}
