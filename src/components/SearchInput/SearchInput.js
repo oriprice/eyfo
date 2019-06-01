@@ -124,11 +124,14 @@ class SearchInput extends Component {
         });
         const index = searchPattern[Symbol.search](response.data);
         if (index >= 0) {
-          response.data = response.data.slice(index - 300, index);
-          const navigateTourl = urlPattern[Symbol.match](response.data).slice(-1)[0]
-            .replace(urlPatternToReplace, urlPatternReplacement);
-          await setInStorage({ options: { ...this.options, [packageName]: navigateTourl } });
-          resolve({ url: navigateTourl });
+          response.data = response.data.slice(Math.max(0, index - 300), index);
+          const urlPatternResult = urlPattern[Symbol.match](response.data);
+          if (urlPatternResult) {
+            const navigateTourl = urlPatternResult.slice(-1)[0]
+              .replace(urlPatternToReplace, urlPatternReplacement);
+            await setInStorage({ options: { ...this.options, [packageName]: navigateTourl } });
+            resolve({ url: navigateTourl });
+          }
         }
         pagedUrl = pagedUrl.replace(`p=${pageIndex}`, `p=${pageIndex + 1}`);
         pageIndex += 1;
@@ -145,7 +148,7 @@ class SearchInput extends Component {
     const packageName = value.slice().replace(/@(.*)\//, '');
     const searchPatternWithOrg = new RegExp(`name<span class="pl-pds">&quot;</span></span>: <span class="pl-s"><span class="pl-pds">&quot;</span>(@(.*)/)?<span class='text-bold'>${packageName}</span>`);
     const searchPattern = new RegExp(`<span class="text-bold">${packageName}</span>`, 'g');
-    const searchPatternForPom = new RegExp(`span>&gt;<span class="text-bold">${packageName}</span>&lt;/<span`);
+    const searchPatternForPom = new RegExp(`name</span>&gt;<span class='text-bold'>${packageName}</span>&lt;/<span`);
     const urlPatternToFind = /\/.*\/(?=package.json)/;
     const urlPatternToReplace = /\/blob(\/[a-z0-9]*){1}/;
     const urlStringReplacement = '/tree/master';
@@ -172,7 +175,7 @@ class SearchInput extends Component {
           packageName);
       } else if (this.organizations && this.organizations.length > 0) {
         for (let i = 0; i < this.organizations.length; i += 1) {
-          searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apackage.json+in%3Afile&type=Code`,
+          searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org:${this.organizations[i]}+filename:package.json+in:file&type=Code`,
             searchPatternWithOrg,
             urlPatternToFind,
             urlPatternToReplace,
@@ -181,7 +184,7 @@ class SearchInput extends Component {
           if (searchResult) {
             break;
           }
-          searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org%3A${this.organizations[i]}+filename%3Apom.xml+in%3Afile&type=Code`,
+          searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org:${this.organizations[i]}+filename:pom.xml+in:file&type=Code`,
             searchPatternForPom,
             /\/.*\/(?=pom.xml)/,
             urlPatternToReplace,
