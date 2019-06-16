@@ -148,7 +148,7 @@ class SearchInput extends Component {
     const packageName = value.slice().replace(/@(.*)\//, '');
     const searchPatternWithOrg = new RegExp(`name<span class="pl-pds">&quot;</span></span>: <span class="pl-s"><span class="pl-pds">&quot;</span>(@(.*)/)?<span class='text-bold'>${packageName}</span>`);
     const searchPattern = new RegExp(`<span class="text-bold">${packageName}</span>`, 'g');
-    const searchPatternForPom = new RegExp(`<span class="(.)*">${packageName}</span>`);
+    const searchPatternForPom = new RegExp(`<span class=["'](.)*["']>${packageName}</span>`);
     const urlPatternToFind = /\/.*\/(?=package.json)/;
     const urlPatternToReplace = /\/blob(\/[a-z0-9]*){1}/;
     const urlStringReplacement = '/tree/master';
