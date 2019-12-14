@@ -44,7 +44,7 @@
     "webpack-cli": "^3.2.0"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "file-loader": "^3.0.1",
