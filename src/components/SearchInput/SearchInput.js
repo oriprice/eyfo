@@ -1,23 +1,23 @@
 /* global window _gaq */
 import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import FunniesComponent from 'funnies/dist/react';
-import axios from 'axios';
 import classnames from 'classnames';
 
 import { setInStorage, getFromStorage } from '../../utils/storageUtils';
 import getUserOrganizations from '../../utils/organizationsUtils';
-
+import tabUtils from '../../utils/tabUtils';
 import styles from './SearchInput.scss';
 import './searchInput.css';
-import tabUtils from '../../utils/tabUtils';
 
 const getSuggestions = (value, options) => {
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
 
   return !options || inputLength === 0 ? []
-    : Object.keys(options).filter(option => option.toLowerCase().includes(inputValue));
+    : Object.keys(options).filter((option) => option.toLowerCase().includes(inputValue));
 };
 
 class SearchInput extends Component {
@@ -57,7 +57,7 @@ class SearchInput extends Component {
     });
   };
 
-  renderSuggestion = suggestion => (
+  renderSuggestion = (suggestion) => (
     <div>
       {suggestion}
       <div
@@ -107,50 +107,10 @@ class SearchInput extends Component {
     });
   };
 
-  search = (url, searchPattern, urlPattern,
-    urlPatternToReplace, urlPatternReplacement,
-    packageName) => new Promise(async (resolve, reject) => {
-    try {
-      let pageIndex = 1;
-      let response = { data: '' };
-      let pagedUrl = url.slice();
-      while (pageIndex <= 5
-        && !/<div class="code-list">\s*<\/div>/.test(response.data)
-        && !/We couldn’t find any code matching/.test(response.data)) {
-        response = await axios.get(pagedUrl, {
-          validateStatus(status) {
-            return status >= 200 && status < 300; // default
-          },
-        });
-        const index = searchPattern[Symbol.search](response.data);
-        if (index >= 0) {
-          response.data = response.data.slice(Math.max(0, index - 300), index);
-          const urlPatternResult = urlPattern[Symbol.match](response.data);
-          if (urlPatternResult) {
-            const navigateTourl = urlPatternResult.slice(-1)[0]
-              .replace(urlPatternToReplace, urlPatternReplacement);
-            await setInStorage({ options: { ...this.options, [packageName]: navigateTourl } });
-            resolve({ url: navigateTourl });
-          }
-        }
-        pagedUrl = pagedUrl.replace(`p=${pageIndex}`, `p=${pageIndex + 1}`);
-        pageIndex += 1;
-      }
-
-      resolve();
-    } catch (e) {
-      reject(e);
-    }
-  });
-
   onFormSubmit = async (e) => {
+    const { token } = this.props;
     const { value, global } = this.state;
-    const packageName = value.slice().replace(/@(.*)\//, '');
-    const searchPatternWithOrg = new RegExp(`name<span class="pl-pds">&quot;</span></span>: <span class="pl-s"><span class="pl-pds">&quot;</span>(@(.*)/)?<span class='text-bold'>${packageName}</span>`);
-    const searchPattern = new RegExp(`<span class="text-bold">${packageName}</span>`, 'g');
-    const searchPatternForPom = new RegExp(`<span class=["'](.)*["']>${packageName}</span>`);
-    const urlPatternToFind = /\/.*\/(?=package.json)/;
-    const urlPatternToReplace = /\/blob(\/[a-z0-9]*){1}/;
+    const urlPatternToReplace = /\/blob(\/[a-z0-9]*)/;
     const urlStringReplacement = '/tree/master';
 
     e.preventDefault();
@@ -158,66 +118,50 @@ class SearchInput extends Component {
       loading: true,
     });
 
-    const url = this.options[packageName];
+    const url = this.options[value];
     if (url) {
       tabUtils.openTab(url);
       window.close();
     }
-
-    let searchResult;
+    let matches;
+    let navigateToUrl;
     try {
       if (global) {
-        searchResult = await this.search(`https://github.com/search?q=${packageName}&o=desc&s=stars`,
-          searchPattern,
-          /href=".*"/,
-          /^href="|"$/g,
-          '',
-          packageName);
+        const response = await axios.get(`https://api.github.com/search/repositories?order=desc&q=${value}`);
+        matches = response.data.items;
       } else if (this.organizations && this.organizations.length > 0) {
-        for (let i = 0; i < this.organizations.length; i += 1) {
-          searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org:${this.organizations[i]}+filename:package.json+in:file&type=Code`,
-            searchPatternWithOrg,
-            urlPatternToFind,
-            urlPatternToReplace,
-            urlStringReplacement,
-            packageName);
-          if (searchResult) {
-            break;
-          }
-          searchResult = await this.search(`https://github.com/search?p=1&q=${packageName}+org:${this.organizations[i]}+filename:pom.xml+in:file&type=Code`,
-            searchPatternForPom,
-            /\/.*\/(?=pom.xml)/,
-            urlPatternToReplace,
-            urlStringReplacement,
-            packageName);
-          if (searchResult) {
-            break;
-          }
-        }
-      } else {
-        this.setState({
-          error: `You should add <a href='?options' target="_blank">Organizations</a>.
-              <br />
-             Or hit TAB to search globally`,
-        });
+        const queryPromises = this.organizations.map((organization) => axios.get(
+          `https://api.github.com/search/code?q=org:${organization}+filename:package.json+" name ${value} "+in:file`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ));
+        const results = await Promise.all(queryPromises);
+        matches = results.map((result) => result.data.items)
+          .reduce((previous, current) => previous.concat(current), []);
+        matches = matches.sort((a, b) => b.score - a.score);
       }
-      if (searchResult && searchResult.url) {
-        tabUtils.openTab(searchResult.url);
-        window.close();
+      if (matches && matches.length > 0) {
+        navigateToUrl = matches[0].html_url
+          .replace(urlPatternToReplace, urlStringReplacement).replace('/package.json', '');
+        await setInStorage({ options: { ...this.options, [value]: navigateToUrl } });
       }
 
+      if (navigateToUrl) {
+        tabUtils.openTab(navigateToUrl);
+        window.close();
+      }
+    } finally {
       this.setState({
         error: `Oh no, package not found.
               <br />
-              <a href="https://www.google.com/search?q=${packageName}" target="_blank">Google it for you?</a>`,
-      });
-    } catch (error) {
-      this.setState({
-        error: `${error.message}First, sign in to <a href="https://www.github.com" target="_blank">GitHub</a>
-        <br />
-        Then, unleash me..`,
+              <a href="https://www.google.com/search?q=${value}" target="_blank">Google it for you?</a>`,
       });
     }
+    return null;
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
@@ -250,7 +194,7 @@ class SearchInput extends Component {
             highlightFirstSuggestion
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={suggestion => suggestion}
+            getSuggestionValue={(suggestion) => suggestion}
             renderSuggestion={this.renderSuggestion}
             inputProps={inputProps}
             renderInputComponent={this.renderInputComponent}
@@ -282,3 +226,7 @@ class SearchInput extends Component {
 }
 
 export default SearchInput;
+
+SearchInput.propTypes = {
+  token: PropTypes.string.isRequired,
+};

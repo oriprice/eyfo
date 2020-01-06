@@ -26,7 +26,6 @@ class Options extends Component {
     this.setState({ organizations });
   }
 
-
   onDragStart(e, index) {
     const { organizations } = this.state;
     this.draggedItem = organizations[index];
@@ -45,7 +44,7 @@ class Options extends Component {
     }
 
     // filter out the currently dragged item
-    const currnetItems = organizations.filter(item => item !== this.draggedItem);
+    const currnetItems = organizations.filter((item) => item !== this.draggedItem);
 
     // add the dragged item after the dragged over item
     currnetItems.splice(index, 0, this.draggedItem);
@@ -53,10 +52,6 @@ class Options extends Component {
     this.setState({ organizations: currnetItems }, async () => {
       await setInStorage({ organizations: currnetItems });
     });
-  }
-
-  onDragEnd() {
-    this.draggedIdx = null;
   }
 
   addOrg(orgName) {
@@ -83,8 +78,8 @@ class Options extends Component {
 
   async importOrganizations() {
     this.setState({ loading: true });
-    return new Promise(async (resolve) => {
-      const organizations = await getUserOrganizations();
+    const organizations = await getUserOrganizations();
+    return new Promise((resolve) => {
       this.setState({
         organizations,
         loading: false,
@@ -98,7 +93,7 @@ class Options extends Component {
   async removeOrg(orgName) {
     let organizations = await getFromStorage('organizations');
     this.setState({
-      organizations: organizations.filter(org => org !== orgName),
+      organizations: organizations.filter((org) => org !== orgName),
     }, async () => {
       await setInStorage({ organizations } = this.state);
     });
@@ -120,7 +115,7 @@ class Options extends Component {
               organizations={organizations}
               onDragStart={(e, index) => this.onDragStart(e, index)}
               onDragEnd={() => this.onDragEnd()}
-              onDragOver={index => this.onDragOver(index)}
+              onDragOver={(index) => this.onDragOver(index)}
             />
           )
       }

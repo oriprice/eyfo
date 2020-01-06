@@ -1,9 +1,10 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -29,7 +30,7 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              camelCase: true,
+              localsConvention: 'camelCase',
               modules: true,
             },
           },
@@ -41,14 +42,14 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              camelCase: true,
+              localsConvention: 'camelCase',
             },
           }],
       },
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({
       template: './src/index.html',
       filename: './index.html',

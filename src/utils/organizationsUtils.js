@@ -12,6 +12,7 @@ function getMatches(string, regex, index) {
 }
 
 export default async () => {
+  // TODO: change this to work with github.api (https://api.github.com/user/orgs) after we get authorization for Eyfo app
   const result = await axios.get('https://github.com/settings/organizations');
   return getMatches(result.data, /(?:<a href="\/.*">)(.*)(?:<\/a>)/g, 1).slice(1);
 };

@@ -3,9 +3,13 @@ import { arrayOf, func, string } from 'prop-types';
 import styles from './OrganizationList.scss';
 
 class OrganizationList extends Component {
-  state={
-    draggingOverIndex: -1,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      draggingOverIndex: -1,
+    };
+  }
+
 
   render() {
     const {
@@ -29,7 +33,7 @@ class OrganizationList extends Component {
                       draggingOverIndex: index,
                     }, () => onDragOver(index));
                   }}
-                  onDragStart={e => onDragStart(e, index)}
+                  onDragStart={(e) => onDragStart(e, index)}
                   onDragEnd={() => {
                     this.setState({
                       draggingOverIndex: -1,
