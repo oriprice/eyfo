@@ -10,7 +10,6 @@ class OrganizationList extends Component {
     };
   }
 
-
   render() {
     const {
       organizations, removeOrg, onDragStart, onDragEnd, onDragOver,

@@ -127,11 +127,11 @@ class SearchInput extends Component {
     let navigateToUrl;
     try {
       if (global) {
-        const response = await axios.get(`https://api.github.com/search/repositories?order=desc&q=${value}`);
+        const response = await axios.get(encodeURI(`https://api.github.com/search/repositories?order=desc&q=${value}`));
         matches = response.data.items;
       } else if (this.organizations && this.organizations.length > 0) {
         const queryPromises = this.organizations.map((organization) => axios.get(
-          `https://api.github.com/search/code?q=org:${organization}+filename:package.json+" name ${value} "+in:file`,
+          encodeURI(`https://api.github.com/search/code?q=org:${organization}+filename:package.json+" name ${value} "+in:file`),
           {
             headers: {
               'Content-Type': 'application/json',
