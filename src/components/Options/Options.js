@@ -1,5 +1,6 @@
 /* globals _gaq */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { setInStorage, getFromStorage } from '../../utils/storageUtils';
@@ -77,8 +78,9 @@ class Options extends Component {
   }
 
   async importOrganizations() {
+    const { token } = this.props;
     this.setState({ loading: true });
-    const organizations = await getUserOrganizations();
+    const organizations = await getUserOrganizations(token);
     return new Promise((resolve) => {
       this.setState({
         organizations,
@@ -130,3 +132,7 @@ class Options extends Component {
 }
 
 export default Options;
+
+Options.propTypes = {
+  token: PropTypes.string.isRequired,
+};

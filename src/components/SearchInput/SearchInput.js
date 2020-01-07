@@ -112,6 +112,7 @@ class SearchInput extends Component {
     const { value, global } = this.state;
     const urlPatternToReplace = /\/blob(\/[a-z0-9]*)/;
     const urlStringReplacement = '/tree/master';
+    const unscopedPackageName = value.slice().replace(/@(.*)\//, '');
 
     e.preventDefault();
     this.setState({
@@ -123,30 +124,44 @@ class SearchInput extends Component {
       tabUtils.openTab(url);
       window.close();
     }
-    let matches;
+    let matches = [];
     let navigateToUrl;
     try {
       if (global) {
-        const response = await axios.get(encodeURI(`https://api.github.com/search/repositories?order=desc&q=${value}`));
-        matches = response.data.items;
+        const resultGlobal = await axios.get(encodeURI(`https://api.github.com/search/repositories?order=desc&q=${value}`));
+        matches = resultGlobal.data.items;
       } else if (this.organizations && this.organizations.length > 0) {
-        const queryPromises = this.organizations.map((organization) => axios.get(
-          encodeURI(`https://api.github.com/search/code?q=org:${organization}+filename:package.json+" name ${value} "+in:file`),
+        const organizationsQuery = this.organizations.reduce((prev, current) => `${prev}org:${current}+`, '');
+        const packageJsonPromise = axios.get(
+          `https://api.github.com/search/code?q=${organizationsQuery}filename:package.json+" %22name%22%3A%20%22${encodeURI(value)}%2C "+in:file`,
           {
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
           },
-        ));
-        const results = await Promise.all(queryPromises);
-        matches = results.map((result) => result.data.items)
-          .reduce((previous, current) => previous.concat(current), []);
-        matches = matches.sort((a, b) => b.score - a.score);
+        );
+
+        const pomXmlPromise = axios.get(
+          `https://api.github.com/search/code?q=${
+            organizationsQuery}filename:pom.xml+"%3CartifactId%3E${unscopedPackageName}%3C%2FartifactId%3E"%2C "+in:file`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        const [resultPomXml, resultPackageJson] = await Promise.all([
+          pomXmlPromise, packageJsonPromise,
+        ]);
+        matches = [...resultPackageJson.data.items, ...resultPomXml.data.items]
+          .sort((a, b) => b.score - a.score);
       }
       if (matches && matches.length > 0) {
         navigateToUrl = matches[0].html_url
-          .replace(urlPatternToReplace, urlStringReplacement).replace('/package.json', '');
+          .replace(urlPatternToReplace, urlStringReplacement).replace('/package.json', '').replace('pom.xml', '');
         await setInStorage({ options: { ...this.options, [value]: navigateToUrl } });
       }
 
