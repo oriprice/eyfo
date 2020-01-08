@@ -1,4 +1,4 @@
-/* globals _gaq */
+/* globals _gaq window */
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
@@ -113,45 +113,48 @@ class Options extends Component {
       <div className={classnames(styles.card, 'card')}>
         <h1 className={classnames(styles.cardTitle, 'card-title')}>Settings</h1>
         <div className={classnames(styles.cardBody, 'card-body')}>
-          {
-          loading
+          <div className={styles.tokenWrapper}>
+            <div className={styles.accessTokenTitle}>
+              <h3>Github Access Token</h3>
+              <button
+                type="button"
+                className={styles.tokenButton}
+                disabled={!token}
+                onClick={() => window.open('https://github.com/settings/tokens/new?scopes=repo&description=Eyfo%20browser%20extension', '_blank')}
+              >
+                <i className="fa fa-2x fa-plus-circle" />
+              </button>
+            </div>
+            <input
+              type="text"
+              value={token}
+              onChange={(e) => {
+                this.setState({ token: e.target.value });
+                setInStorage({ token: e.target.value });
+              }}
+              className={styles.formControl}
+              placeholder="Add Personal Access Token"
+            />
+            <small className="form-text text-muted">
+              Token will be stored in browsers local storage
+            </small>
+          </div>
+          <hr />
+          {loading
             ? (<div className={styles.loading}><i className="fa fa-spinner fa-pulse fa-3x fa-fw" /></div>)
             : (
-              <>
-                <div className={styles.tokenWrapper}>
-                  <div className={styles.accessTokenTitle}>
-                    <h3>Github Access Token</h3>
-                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/tokens/new?scopes=repo&description=Eyfo%20browser%20extension">Create new token</a>
-                  </div>
-                  <input
-                    type="text"
-                    value={token}
-                    onChange={(e) => {
-                      this.setState({ token: e.target.value });
-                      setInStorage({ token: e.target.value });
-                    }}
-                    className={styles.formControl}
-                    placeholder="Add Personal Access Token"
-                  />
-                  <small className="form-text text-muted">
-                    Token will be stored in browsers local storage
-                  </small>
-                </div>
-                <hr />
-                <DynamicList
-                  addOrg={this.addOrg}
-                  removeOrg={this.removeOrg}
-                  organizations={organizations}
-                  onDragStart={(e, index) => this.onDragStart(e, index)}
-                  onDragEnd={() => this.onDragEnd()}
-                  onDragOver={(index) => this.onDragOver(index)}
-                />
-              </>
-            )
-          }
+              <DynamicList
+                addOrg={this.addOrg}
+                removeOrg={this.removeOrg}
+                organizations={organizations}
+                onDragStart={(e, index) => this.onDragStart(e, index)}
+                onDragEnd={() => this.onDragEnd()}
+                onDragOver={(index) => this.onDragOver(index)}
+              />
+            )}
           <div className={styles.buttonWrapper}>
             <div className={styles.divider}><span>OR</span></div>
-            <button type="button" className={styles.button} onClick={() => this.importOrganizations()}>Import Organizations</button>
+            <button type="button" className={token ? styles.importButton : styles.importButtonDisabled} disabled={!token} onClick={() => this.importOrganizations()}>Import Organizations</button>
           </div>
         </div>
       </div>

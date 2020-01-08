@@ -109,7 +109,7 @@ class SearchInput extends Component {
 
   onFormSubmit = async (e) => {
     const { token } = this.props;
-    const { value, global } = this.state;
+    const { value } = this.state;
     const urlPatternToReplace = /\/blob(\/[a-z0-9]*)/;
     const urlStringReplacement = '/tree/master';
     const unscopedPackageName = value.slice().replace(/@(.*)\//, '');
@@ -127,13 +127,10 @@ class SearchInput extends Component {
     let matches = [];
     let navigateToUrl;
     try {
-      if (global) {
-        const resultGlobal = await axios.get(encodeURI(`https://api.github.com/search/repositories?order=desc&q=${value}`));
-        matches = resultGlobal.data.items;
-      } else if (this.organizations && this.organizations.length > 0) {
+      if (this.organizations && this.organizations.length > 0) {
         const organizationsQuery = this.organizations.reduce((prev, current) => `${prev}org:${current}+`, '');
         const packageJsonPromise = axios.get(
-          `https://api.github.com/search/code?q=${organizationsQuery}filename:package.json+" %22name%22%3A%20%22${encodeURI(value)}%2C "+in:file`,
+          `https://api.github.com/search/code?q=${organizationsQuery}filename:package.json+" ${encodeURIComponent(`"name": "${value}",`)} "+in:file`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -143,8 +140,7 @@ class SearchInput extends Component {
         );
 
         const pomXmlPromise = axios.get(
-          `https://api.github.com/search/code?q=${
-            organizationsQuery}filename:pom.xml+"%3CartifactId%3E${unscopedPackageName}%3C%2FartifactId%3E"%2C "+in:file`,
+          `https://api.github.com/search/code?q=${organizationsQuery}filename:pom.xml+"${encodeURIComponent(`<artifactId>${unscopedPackageName}</artifactId>, `)}"+in:file`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -159,6 +155,12 @@ class SearchInput extends Component {
         matches = [...resultPackageJson.data.items, ...resultPomXml.data.items]
           .sort((a, b) => b.score - a.score);
       }
+      if (matches.length === 0 || matches[0].score < 50) {
+        const sanitizedValue = value.replace('@', '').split('/')[0];
+        const resultGlobal = await axios.get(`https://api.github.com/search/repositories?order=desc&q=${encodeURIComponent(sanitizedValue)}`);
+        matches = resultGlobal.data.items;
+      }
+
       if (matches && matches.length > 0) {
         navigateToUrl = matches[0].html_url
           .replace(urlPatternToReplace, urlStringReplacement).replace('/package.json', '').replace('pom.xml', '');
@@ -169,12 +171,27 @@ class SearchInput extends Component {
         tabUtils.openTab(navigateToUrl);
         window.close();
       }
+    } catch (error) {
+      if (error.response.status === 403) {
+        this.setState({
+          error: `You have triggered github abuse mechanism, please retry in ${error.response.headers['retry-after']} seconds`,
+        });
+      }
+
+      if (error.response.status === 401) {
+        this.setState({
+          error: 'You are unauthorized, please check/reset your token in the <a href="?options" target="_blank">settings</a> page',
+        });
+      }
     } finally {
-      this.setState({
-        error: `Oh no, package not found.
+      const { error } = this.state;
+      if (!error) {
+        this.setState({
+          error: `Oh no, package not found.
               <br />
               <a href="https://www.google.com/search?q=${value}" target="_blank">Google it for you?</a>`,
-      });
+        });
+      }
     }
     return null;
   };
