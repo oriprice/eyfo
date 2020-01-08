@@ -1,5 +1,5 @@
 .card {
-  width: 30rem;
+  width: 40rem;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -58,5 +58,32 @@
 .divider {
   width:100%; text-align:center; border-bottom: 1px solid #000; line-height:0.1em; margin:10px 0 20px;
   & span { background:#efefef; padding:0 10px; }
+}
+
+.form-control {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s;
+}
+
+.token-wrapper {
+  padding: 10px;
+}
+
+.access-token-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 

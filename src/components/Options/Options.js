@@ -1,6 +1,5 @@
 /* globals _gaq */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { setInStorage, getFromStorage } from '../../utils/storageUtils';
@@ -13,6 +12,7 @@ class Options extends Component {
     super(props);
     this.state = {
       organizations: [],
+      token: '',
     };
     this.addOrg = this.addOrg.bind(this);
     this.removeOrg = this.removeOrg.bind(this);
@@ -24,7 +24,8 @@ class Options extends Component {
     if (!organizations) {
       organizations = await this.importOrganizations();
     }
-    this.setState({ organizations });
+    const token = await getFromStorage('token');
+    this.setState({ organizations, token });
   }
 
   onDragStart(e, index) {
@@ -45,14 +46,18 @@ class Options extends Component {
     }
 
     // filter out the currently dragged item
-    const currnetItems = organizations.filter((item) => item !== this.draggedItem);
+    const currentItems = organizations.filter((item) => item !== this.draggedItem);
 
     // add the dragged item after the dragged over item
-    currnetItems.splice(index, 0, this.draggedItem);
+    currentItems.splice(index, 0, this.draggedItem);
 
-    this.setState({ organizations: currnetItems }, async () => {
-      await setInStorage({ organizations: currnetItems });
+    this.setState({ organizations: currentItems }, async () => {
+      await setInStorage({ organizations: currentItems });
     });
+  }
+
+  onDragEnd() {
+    this.draggedItem = null;
   }
 
   addOrg(orgName) {
@@ -78,7 +83,7 @@ class Options extends Component {
   }
 
   async importOrganizations() {
-    const { token } = this.props;
+    const { token } = this.state;
     this.setState({ loading: true });
     const organizations = await getUserOrganizations(token);
     return new Promise((resolve) => {
@@ -102,25 +107,48 @@ class Options extends Component {
   }
 
   render() {
-    const { organizations, loading } = this.state;
+    const { organizations, loading, token } = this.state;
+
     return (
       <div className={classnames(styles.card, 'card')}>
-        <h1 className={classnames(styles.cardTitle, 'card-title')}>Github Organizations</h1>
+        <h1 className={classnames(styles.cardTitle, 'card-title')}>Settings</h1>
         <div className={classnames(styles.cardBody, 'card-body')}>
           {
-        loading
-          ? (<div className={styles.loading}><i className="fa fa-spinner fa-pulse fa-3x fa-fw" /></div>)
-          : (
-            <DynamicList
-              addOrg={this.addOrg}
-              removeOrg={this.removeOrg}
-              organizations={organizations}
-              onDragStart={(e, index) => this.onDragStart(e, index)}
-              onDragEnd={() => this.onDragEnd()}
-              onDragOver={(index) => this.onDragOver(index)}
-            />
-          )
-      }
+          loading
+            ? (<div className={styles.loading}><i className="fa fa-spinner fa-pulse fa-3x fa-fw" /></div>)
+            : (
+              <>
+                <div className={styles.tokenWrapper}>
+                  <div className={styles.accessTokenTitle}>
+                    <h3>Github Access Token</h3>
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/settings/tokens/new?scopes=repo&description=Eyfo%20browser%20extension">Create new token</a>
+                  </div>
+                  <input
+                    type="text"
+                    value={token}
+                    onChange={(e) => {
+                      this.setState({ token: e.target.value });
+                      setInStorage({ token: e.target.value });
+                    }}
+                    className={styles.formControl}
+                    placeholder="Add Personal Access Token"
+                  />
+                  <small className="form-text text-muted">
+                    Token will be stored in browsers local storage
+                  </small>
+                </div>
+                <hr />
+                <DynamicList
+                  addOrg={this.addOrg}
+                  removeOrg={this.removeOrg}
+                  organizations={organizations}
+                  onDragStart={(e, index) => this.onDragStart(e, index)}
+                  onDragEnd={() => this.onDragEnd()}
+                  onDragOver={(index) => this.onDragOver(index)}
+                />
+              </>
+            )
+          }
           <div className={styles.buttonWrapper}>
             <div className={styles.divider}><span>OR</span></div>
             <button type="button" className={styles.button} onClick={() => this.importOrganizations()}>Import Organizations</button>
@@ -132,7 +160,3 @@ class Options extends Component {
 }
 
 export default Options;
-
-Options.propTypes = {
-  token: PropTypes.string.isRequired,
-};

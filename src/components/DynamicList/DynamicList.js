@@ -8,16 +8,19 @@ import styles from './DynamicList.scss';
 const DynamicList = ({
   addOrg, organizations, removeOrg, onDragStart, onDragEnd, onDragOver,
 }) => (
-  <div className={styles.componentWrapper}>
-    <OrganizationList
-      organizations={organizations}
-      removeOrg={removeOrg}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onDragOver={onDragOver}
-    />
-    <AddOrgForm addOrg={addOrg} />
-    <small className="form-text text-muted">You can use also csv format i.e. org1, org2...</small>
+  <div className={styles.organizationsSection}>
+    <h3>Github Organizations</h3>
+    <div className={styles.componentWrapper}>
+      <OrganizationList
+        organizations={organizations}
+        removeOrg={removeOrg}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
+      />
+      <AddOrgForm addOrg={addOrg} />
+      <small className="form-text text-muted">You can use also csv format i.e. org1, org2...</small>
+    </div>
   </div>
 );
 

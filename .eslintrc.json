@@ -10,6 +10,7 @@
         "no-await-in-loop": "off",
         "jsx-a11y/no-autofocus": "off",
         "react/no-danger": "off",
+        "no-use-before-define": "off",
         "no-debugger": "warn"
     }
 }

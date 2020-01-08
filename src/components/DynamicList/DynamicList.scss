@@ -1,6 +1,10 @@
-.component-wrapper{
+.component-wrapper {
     box-sizing: border-box;
     margin: auto;
-    width: 300px;
-    padding: 10px;
+    width: 100%;
+    padding: 0 10px 10px 10px;
+}
+
+.organizations-section {
+    padding: 0 10px 10px 10px;
 }
