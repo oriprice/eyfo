@@ -119,8 +119,7 @@ class Options extends Component {
               <button
                 type="button"
                 className={styles.tokenButton}
-                disabled={!token}
-                onClick={() => window.open('https://github.com/settings/tokens/new?scopes=repo&description=Eyfo%20browser%20extension', '_blank')}
+                onClick={() => window.open('https://github.com/settings/tokens/new?scopes=repo&description=Eyfo%20Browser%20Extension', '_blank')}
               >
                 <i className="fa fa-2x fa-plus-circle" />
               </button>
@@ -154,7 +153,14 @@ class Options extends Component {
             )}
           <div className={styles.buttonWrapper}>
             <div className={styles.divider}><span>OR</span></div>
-            <button type="button" className={token ? styles.importButton : styles.importButtonDisabled} disabled={!token} onClick={() => this.importOrganizations()}>Import Organizations</button>
+            <div className={styles.tooltip}>
+              <button type="button" className={token ? styles.importButton : styles.importButtonDisabled} disabled={!token} onClick={() => this.importOrganizations()}>Import Organizations</button>
+              {!token && (
+              <span className={styles.tooltipText}>
+                Token is required to fetch organizations
+              </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
