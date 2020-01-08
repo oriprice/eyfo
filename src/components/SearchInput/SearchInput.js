@@ -26,7 +26,6 @@ class SearchInput extends Component {
     this.state = {
       value: '',
       suggestions: [],
-      global: false,
     };
   }
 
@@ -38,9 +37,6 @@ class SearchInput extends Component {
       this.organizations = await getUserOrganizations();
       await setInStorage({ organizations: this.organizations });
     }
-
-    const global = await getFromStorage('global') || false;
-    this.setState({ global });
   }
 
   onSuggestionSelected = (event, { suggestion }) => {
@@ -72,34 +68,21 @@ class SearchInput extends Component {
     </div>
   );
 
-  renderInputComponent = (inputProps) => {
-    const { global } = this.state;
-    return (
-      <div
-        className={styles.inputContainer}
-        onKeyDown={(e) => {
-          this.setState({ error: null, loading: false });
-          if (e.keyCode === 9) {
-            this.setState({ global: !global },
-              () => setInStorage({ global: !global }));
-            if (e.preventDefault) {
-              e.preventDefault();
-              return false;
-            }
-          }
-          return true;
-        }}
-      >
-        <i className={classnames(styles.icon, 'fas', 'fa-search')} />
-        {global && (<span className={styles.label}>Global</span>)}
-        <input
-          autoFocus
-          className={styles.input}
-          {...inputProps}
-        />
-      </div>
-    );
-  };
+  renderInputComponent = (inputProps) => (
+    <div
+      className={styles.inputContainer}
+      onKeyDown={() => {
+        this.setState({ error: null, loading: false });
+        return true;
+      }}
+    >
+      <i className={classnames(styles.icon, 'fas', 'fa-search')} />
+      <input
+        autoFocus
+        {...inputProps}
+      />
+    </div>
+  );
 
   onChange = (event, { newValue }) => {
     this.setState({
@@ -233,11 +216,6 @@ class SearchInput extends Component {
             onSuggestionSelected={this.onSuggestionSelected}
             focusInputOnSuggestionClick={false}
           />
-          <small className="form-text text-muted">
-            Use
-            <b> TAB </b>
-            to toggle between global and private search
-          </small>
           {loading && !error && (
             <div className={styles.loading}>
               <div className={styles.spinner}>
