@@ -115,7 +115,12 @@ class Options extends Component {
         <div className={classnames(styles.cardBody, 'card-body')}>
           <div className={styles.tokenWrapper}>
             <div className={styles.accessTokenTitle}>
-              <h3>Github Access Token</h3>
+              <h3>
+                Github Access Token
+                <span className={styles.help}>
+                  <i className="far fa-question-circle" aria-hidden="true" onClick={() => window.open('https://github.com/oriprice/eyfo/blob/master/README.md#access-token', '_blank')} />
+                </span>
+              </h3>
               <button
                 type="button"
                 className={styles.tokenButton}
