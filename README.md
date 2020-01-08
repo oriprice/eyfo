@@ -15,7 +15,7 @@ Browser extension (Chrome) to find github packages within predefined organizatio
 * Search will search inside all pre-configured organizations, when no suitable result found, Eyfo will try finding the package in github public repos. 
 * Cached result will appear in a list below.
 
-##Access Token
+## Access Token
 Eyfo uses the GitHub API to retrieve repository metadata, which requires authentication.
 If you don't already have one, create one, and paste it into the token field in the Settings page. 
 Note that the minimal scopes that should be granted are public_repo and repo (if you need access to private repositories).
