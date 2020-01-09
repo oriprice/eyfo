@@ -1,3 +1,4 @@
+/* globals window */
 import React from 'react';
 import { func, arrayOf, string } from 'prop-types';
 
@@ -9,7 +10,12 @@ const DynamicList = ({
   addOrg, organizations, removeOrg, onDragStart, onDragEnd, onDragOver,
 }) => (
   <div className={styles.organizationsSection}>
-    <h3>Github Organizations</h3>
+    <h3>
+      Github Organizations
+      <span className={styles.help}>
+        <i className="far fa-question-circle" aria-hidden="true" onClick={() => window.open('https://github.com/oriprice/eyfo/blob/master/README.md#configurations', '_blank')} />
+      </span>
+    </h3>
     <div className={styles.componentWrapper}>
       { organizations && (
       <OrganizationList
