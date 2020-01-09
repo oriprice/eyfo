@@ -13,6 +13,8 @@ class Options extends Component {
     this.state = {
       organizations: [],
       token: '',
+      cleared: false,
+      options: {},
     };
     this.addOrg = this.addOrg.bind(this);
     this.removeOrg = this.removeOrg.bind(this);
@@ -22,11 +24,12 @@ class Options extends Component {
     _gaq.push(['_trackPageview']);
     const token = await getFromStorage('token');
     let organizations = await getFromStorage('organizations') || [];
+    const options = await getFromStorage('options') || [];
     if (!organizations && token) {
       organizations = await this.importOrganizations();
     }
 
-    this.setState({ organizations, token });
+    this.setState({ organizations, token, options });
   }
 
   onDragStart(e, index) {
@@ -108,7 +111,9 @@ class Options extends Component {
   }
 
   render() {
-    const { organizations, loading, token } = this.state;
+    const {
+      organizations, loading, token, cleared, options,
+    } = this.state;
 
     return (
       <div className={classnames(styles.card, 'card')}>
@@ -136,7 +141,7 @@ class Options extends Component {
               />
               <button
                 type="button"
-                className={styles.tokenButton}
+                className={styles.button}
                 onClick={() => window.open('https://github.com/settings/tokens/new?scopes=repo&description=Eyfo%20Browser%20Extension', '_blank')}
               >
                Generate
@@ -168,6 +173,28 @@ class Options extends Component {
                 Token is required to fetch organizations
               </span>
               )}
+            </div>
+          </div>
+          <hr />
+          <div>
+            <h3>
+              Advanced
+            </h3>
+            <div className={styles.advancedWrapper}>
+              {`Clear ${Object.keys(options).length} cached results`}
+              <button
+                type="button"
+                className={styles.button}
+                onClick={async () => {
+                  await setInStorage({ options: {} });
+                  this.setState({ cleared: true, options: {} });
+                  setTimeout(() => { this.setState({ cleared: false }); }, 3000);
+                }}
+              >
+                Clear
+              </button>
+              &nbsp;
+              {cleared && 'Cleared!'}
             </div>
           </div>
         </div>

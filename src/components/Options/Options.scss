@@ -35,7 +35,7 @@
   }
 }
 
-.token-button {
+.button {
   background-color: midnightblue;
   border: none;
   color: white;
@@ -47,6 +47,7 @@
   font-size: 16px;
   border-radius: 4px;
   outline: transparent;
+  cursor: pointer;
 }
 
 .import-button {
@@ -92,6 +93,14 @@
    display: flex;
    align-items: center;
    justify-content: center;
+   padding-left: 0;
+   margin: auto;
+ }
+
+.advanced-wrapper {
+   display: flex;
+   align-items: center;
+   justify-content: stretch;
    padding-left: 0;
    margin: auto;
  }
