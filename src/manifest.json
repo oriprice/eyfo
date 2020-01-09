@@ -15,7 +15,6 @@
   "options_page":"index.html?options",
   "content_security_policy": "script-src 'self' 'sha256-m7R1zzM6IUk6v6+pnZA0rBeM0xL6oLiDpnjl9lfdwRA=' 'sha256-YD7kr76suERaRNp+QkSCLva0rewzdm8/iTHHn3hhTfY=' https://ssl.google-analytics.com; object-src 'self'",
   "permissions": [
-    "identity",
     "tabs",
     "https://api.github.com/*",
     "storage"
