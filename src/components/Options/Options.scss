@@ -83,6 +83,14 @@
   & span { background:#efefef; padding:0 10px; }
 }
 
+.input-wrapper {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding-left: 0;
+   margin: auto;
+ }
+
 .form-control {
   display: block;
   box-sizing: border-box;

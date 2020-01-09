@@ -21,7 +21,7 @@ class Options extends Component {
   async componentDidMount() {
     _gaq.push(['_trackPageview']);
     const token = await getFromStorage('token');
-    let organizations = await getFromStorage('organizations');
+    let organizations = await getFromStorage('organizations') || [];
     if (!organizations && token) {
       organizations = await this.importOrganizations();
     }
@@ -122,6 +122,18 @@ class Options extends Component {
                   <i className="far fa-question-circle" aria-hidden="true" onClick={() => window.open('https://github.com/oriprice/eyfo/blob/master/README.md#access-token', '_blank')} />
                 </span>
               </h3>
+            </div>
+            <div className={styles.inputWrapper}>
+              <input
+                type="text"
+                value={token}
+                onChange={(e) => {
+                  this.setState({ token: e.target.value });
+                  setInStorage({ token: e.target.value });
+                }}
+                className={styles.formControl}
+                placeholder="Add Personal Access Token"
+              />
               <button
                 type="button"
                 className={styles.tokenButton}
@@ -130,16 +142,6 @@ class Options extends Component {
                 <i className="fa fa-2x fa-plus-circle" />
               </button>
             </div>
-            <input
-              type="text"
-              value={token}
-              onChange={(e) => {
-                this.setState({ token: e.target.value });
-                setInStorage({ token: e.target.value });
-              }}
-              className={styles.formControl}
-              placeholder="Add Personal Access Token"
-            />
             <small className="form-text text-muted">
               Token will be stored in browsers local storage
             </small>

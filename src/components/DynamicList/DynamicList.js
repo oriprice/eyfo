@@ -11,6 +11,7 @@ const DynamicList = ({
   <div className={styles.organizationsSection}>
     <h3>Github Organizations</h3>
     <div className={styles.componentWrapper}>
+      { organizations && (
       <OrganizationList
         organizations={organizations}
         removeOrg={removeOrg}
@@ -18,6 +19,7 @@ const DynamicList = ({
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       />
+      )}
       <AddOrgForm addOrg={addOrg} />
       <small className="form-text text-muted">You can use also csv format i.e. org1, org2...</small>
     </div>
