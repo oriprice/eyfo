@@ -20,37 +20,45 @@ class OrganizationList extends Component {
         <ul className={styles.listGroup}>
           {
             organizations.map((orgName, index) => (
-              <li
-                style={{ margin: index === draggingOverIndex ? '10px' : '0', visibility: index === draggingOverIndex ? 'hidden' : 'visible' }}
-                className={styles.listItem}
-              >
-                <div
-                  className={styles.drag}
-                  draggable
-                  onDragOver={() => {
-                    this.setState({
-                      draggingOverIndex: index,
-                    }, () => onDragOver(index));
-                  }}
-                  onDragStart={(e) => onDragStart(e, index)}
-                  onDragEnd={() => {
-                    this.setState({
-                      draggingOverIndex: -1,
-                    }, () => onDragEnd());
-                  }}
+              <div className={styles.tooltip}>
+                {index >= 5 && (
+                  <span className={styles.tooltipText}>
+                      Search is limited to 5 organizations
+                  </span>
+                )}
+                <li
+                  style={{ margin: index === draggingOverIndex ? '10px' : '0', visibility: index === draggingOverIndex ? 'hidden' : 'visible' }}
+                  className={index < 5 ? styles.listItem : styles.listItemDisabled}
                 >
-                  <i className="fas fa-grip-lines" />
-                </div>
-                {orgName}
-                <div
-                  className={styles.trash}
-                  onClick={() => {
-                    removeOrg(orgName);
-                  }}
-                >
-                  <i className="fa fa-times" />
-                </div>
-              </li>
+
+                  <div
+                    className={styles.drag}
+                    draggable
+                    onDragOver={() => {
+                      this.setState({
+                        draggingOverIndex: index,
+                      }, () => onDragOver(index));
+                    }}
+                    onDragStart={(e) => onDragStart(e, index)}
+                    onDragEnd={() => {
+                      this.setState({
+                        draggingOverIndex: -1,
+                      }, () => onDragEnd());
+                    }}
+                  >
+                    <i className="fas fa-grip-lines" />
+                  </div>
+                  {orgName}
+                  <div
+                    className={styles.trash}
+                    onClick={() => {
+                      removeOrg(orgName);
+                    }}
+                  >
+                    <i className="fa fa-times" />
+                  </div>
+                </li>
+              </div>
             ))
           }
         </ul>

@@ -3,13 +3,13 @@
     margin: auto;
 }
 
-.list-group{
+.list-group {
     padding-left: 0;
     margin-bottom: 20px;
     text-align: center;
 }
 
-.list-item{
+.list-item {
     border-radius: 4px;
     position: relative;
     display: block;
@@ -18,6 +18,17 @@
     border: 1px solid #ddd;
     color: midnightblue;
     background-color: aliceblue;
+}
+
+.list-item-disabled {
+    border-radius: 4px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    border: 1px solid #ddd;
+    color: black;
+    background-color: #666666;
 }
 
 .trash {
@@ -38,4 +49,47 @@
 
 .drag i {
     vertical-align: text-top;
+}
+
+
+.tooltip {
+    display:inline-block;
+    position:relative;
+    border-bottom:1px dotted #666;
+    text-align:left;
+    width: 100%;
+}
+
+.tooltip-text {
+    min-width:200px;
+    max-width:400px;
+    top: -10px;
+    left: 100px;
+    transform:translate(-30%,-100%);
+    padding:10px 20px;
+    color:#ffffff;
+    background-color: cornflowerblue;
+    font-weight:normal;
+    font-size:14px;
+    border-radius:8px;
+    position:absolute;
+    z-index:99999999;
+    box-sizing:border-box;
+    box-shadow:0 1px 8px rgba(0,0,0,0.5);
+    display:none;
+}
+
+.tooltip:hover .tooltip-text {
+    display:block;
+}
+
+.tooltip-text::after {
+    content:'';
+    position:absolute;
+    width:15px;
+    height:15px;
+    left:50%;
+    top: 35px;
+    transform:translate(-50%,-50%) rotate(45deg);
+    background-color: cornflowerblue;
 }
