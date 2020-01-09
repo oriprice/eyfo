@@ -20,11 +20,12 @@ class Options extends Component {
 
   async componentDidMount() {
     _gaq.push(['_trackPageview']);
+    const token = await getFromStorage('token');
     let organizations = await getFromStorage('organizations');
-    if (!organizations) {
+    if (!organizations && token) {
       organizations = await this.importOrganizations();
     }
-    const token = await getFromStorage('token');
+
     this.setState({ organizations, token });
   }
 
