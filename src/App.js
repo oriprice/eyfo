@@ -12,9 +12,13 @@ import { getFromStorage } from './utils/storageUtils';
 
 const App = ({ location }) => {
   const [token, setToken] = React.useState('');
+  const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
-    getFromStorage('token').then((tokenFromStorage) => { setToken(tokenFromStorage); });
+    getFromStorage('token').then((tokenFromStorage) => { setToken(tokenFromStorage); setLoading(false); });
   });
+  if (loading) {
+    return <div className={styles.emptyState} />;
+  }
   return (location.search.indexOf('options') > 0
     ? <Options /> : renderMainApp(token)
   );
