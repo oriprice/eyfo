@@ -139,7 +139,7 @@ class Options extends Component {
                 className={styles.tokenButton}
                 onClick={() => window.open('https://github.com/settings/tokens/new?scopes=repo&description=Eyfo%20Browser%20Extension', '_blank')}
               >
-                <i className="fa fa-2x fa-plus-circle" />
+               Generate
               </button>
             </div>
             <small className="form-text text-muted">

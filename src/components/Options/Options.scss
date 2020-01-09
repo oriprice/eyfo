@@ -36,11 +36,16 @@
 }
 
 .token-button {
-  background: none;
-  padding-left: 15px;
+  background-color: midnightblue;
   border: none;
-  color: midnightblue;
-  cursor: pointer;
+  color: white;
+  padding: 9px;
+  margin-left: 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
   outline: transparent;
 }
 
