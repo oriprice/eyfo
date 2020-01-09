@@ -29,11 +29,11 @@ function renderMainApp(token) {
   ) : (
     <div className={styles.noTokenMessage}>
       Searching private repositories requires a GitHub access token.
-      Please go to
+      Please go to &nbsp;
       <a aria-label="Options" href="?options" target="_blank">
-          &nbsp;Settings&nbsp;
+         Settings
       </a>
-          and enter a token.
+        &nbsp; and enter a token.
     </div>
   ));
 }
