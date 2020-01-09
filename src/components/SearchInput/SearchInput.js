@@ -123,7 +123,7 @@ class SearchInput extends Component {
         );
 
         const pomXmlPromise = axios.get(
-          `https://api.github.com/search/code?q=${organizationsQuery}filename:pom.xml+"${encodeURIComponent(`<artifactId>${unscopedPackageName}</artifactId>, `)}"+in:file`,
+          `https://api.github.com/search/code?q=${organizationsQuery}filename:pom.xml+"${encodeURIComponent(`<artifactId> ${unscopedPackageName} </artifactId>, `)}"+in:file`,
           {
             headers: {
               'Content-Type': 'application/json',
