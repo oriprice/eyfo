@@ -111,7 +111,8 @@ class SearchInput extends Component {
     let navigateToUrl;
     try {
       if (this.organizations && this.organizations.length > 0) {
-        const organizationsQuery = this.organizations.reduce((prev, current) => `${prev}org:${current}+`, '');
+        // take only first 5 organizations, github doesnt return accurate result for more
+        const organizationsQuery = this.organizations.reduce((prev, current, index) => (index < 5 ? `${prev}org:${current}+` : ''), '');
         const packageJsonPromise = axios.get(
           `https://api.github.com/search/code?q=${organizationsQuery}filename:package.json+" ${encodeURIComponent(`"name": "${value}",`)} "+in:file`,
           {
