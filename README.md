@@ -1,7 +1,7 @@
 # Eyfo
 Browser extension (Chrome) to find github packages within predefined organizations, and globally.
 
-* Find npm package within multiple organizations.
+* Find npm package within multiple organizations (up to 5 organizations).
 * Find best matching github global repository. 
 * Caching searches for fast future searches.
 
