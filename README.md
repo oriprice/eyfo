@@ -31,7 +31,7 @@ You can modify organizations list through extension settings.
     get better results (search is looking on each organization 1 by 1 top to bottom).
   * <b>Add / Remove</b> - you can manually Add (one by one OR csv string format) or Remove organizations from the list.
  
- <b> TIP: Order your organization list by priority to get accurate results</b> 
+ <b> TIP: Order your organization list by priority to get accurate results.</b> 
 
 ## Hotkeys
 <b>windows</b>: `Ctrl`+`Shift`+`A`<br/>
