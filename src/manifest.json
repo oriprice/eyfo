@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Eyfo",
   "description": "Github Package Finder - Chrome extension",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "browser_action": {
     "default_popup": "index.html?app",
     "default_title": "Eyfo - Github Package Finder"
@@ -17,7 +17,7 @@
   "permissions": [
     "identity",
     "tabs",
-    "*://*.github.com/*",
+    "https://api.github.com/*",
     "storage"
   ],
   "commands": {
