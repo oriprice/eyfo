@@ -1,4 +1,3 @@
-/* globals window */
 import React from 'react';
 import { func, arrayOf, string } from 'prop-types';
 

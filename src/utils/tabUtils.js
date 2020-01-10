@@ -1,4 +1,3 @@
-/* global window */
 export default {
   openTab: (url) => {
     window.chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {

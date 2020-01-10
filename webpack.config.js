@@ -55,6 +55,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: './src/manifest.json' },
+      { from: './src/background.js' },
       { context: './src/assets/', from: '**', to: 'assets' },
     ]),
   ],

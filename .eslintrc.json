@@ -12,5 +12,9 @@
         "react/no-danger": "off",
         "no-use-before-define": "off",
         "no-debugger": "warn"
+    },
+    "env": {
+        "browser": true,
+        "webextensions": true
     }
 }

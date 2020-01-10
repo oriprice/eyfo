@@ -1,4 +1,3 @@
-/* global window */
 const storage = window.chrome.storage.sync;
 
 export const setInStorage = (storageItem) => new Promise((resolve) => {
